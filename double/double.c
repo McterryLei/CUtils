@@ -9,7 +9,7 @@ int linenum = 0;
 
 void doubleword(FILE *fp, const char *filename);
 bool getword(FILE *fp, char *buf, int size);
-void print_doubleword(const char *word, const char *filename);
+void print_doubleword(const char *filename, const char *word);
 
 int main(int argc, char *argv[])
 {
@@ -34,13 +34,14 @@ int main(int argc, char *argv[])
 
 void doubleword(FILE *fp, const char *filename)
 {
-    char prev[128], cur[128];    
+    char prev[128], word[128];    
     prev[0] = '\0';
 
-    while (getword(fp, cur, sizeof(cur))) {
-        if (isalpha(cur[0]) && strcmp(cur, prev) == 0) 
-            print_doubleword(cur, filename);
-        strcpy(prev, cur);
+    while (getword(fp, word, sizeof(word))) {
+        if (isalpha(word[0]) && strcmp(word, prev) == 0) 
+            print_doubleword(filename, word);
+
+        strcpy(prev, word);
     } 
 }
 
@@ -48,7 +49,7 @@ bool getword(FILE *fp, char *buf, int size)
 {
     /* scan forward to a nonspace charactor */
     int c = getc(fp);
-    for (; isspace(c); c = getc(fp))
+    for (; c != EOF && isspace(c); c = getc(fp))
         if (c == '\n')
             linenum++;
 
@@ -66,7 +67,7 @@ bool getword(FILE *fp, char *buf, int size)
     return buf[0] != '\0';
 }
 
-void print_doubleword(const char *word, const char *filename)
+void print_doubleword(const char *filename, const char *word)
 {
     if (filename != NULL)
         printf("%s:", filename); 
