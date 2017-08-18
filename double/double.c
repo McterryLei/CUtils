@@ -34,12 +34,20 @@ int main(int argc, char *argv[])
 
 void doubleword(FILE *fp, const char *filename)
 {
+    int double_count = 0;
     char prev[128], word[128];    
     prev[0] = '\0';
 
     while (getword(fp, word, sizeof(word))) {
-        if (isalpha(word[0]) && strcmp(word, prev) == 0) 
-            print_doubleword(filename, word);
+        if (isalpha(word[0]) && strcmp(word, prev) == 0) {
+            if (double_count <= 0) 
+                print_doubleword(filename, word);
+
+            double_count++;
+        }
+        else {
+            double_count = 0;
+        }
 
         strcpy(prev, word);
     } 
