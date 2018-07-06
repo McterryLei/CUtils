@@ -1,6 +1,6 @@
 /*
  * @Author: Terry Lei
- * @Email: terry_lei@126.com
+ * @Email: terrylei@126.com
  * @Brief: Use hash table to manage strings.
  *  
  *  Examele:
